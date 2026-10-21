@@ -1,0 +1,40 @@
+AI Posture Coach with Facial Expression Detection
+Project Report
+
+1. Project Goal
+The goal of this project is to develop an AI-powered tool that monitors posture and facial expressions in real-time using computer vision. It is designed for developers and office workers to prevent slouching, improve ergonomics, and track emotional states during work sessions. The tool provides immediate feedback through on-screen alerts and audio cues, along with data logging for long-term analysis.
+
+2. Technical Approach
+- Technologies Used: Python, OpenCV for video processing, MediaPipe for pose and face landmark detection.
+- Key Features:
+  - Posture Detection: Uses Euclidean distance between ear and shoulder landmarks, combined with neck angle calculations (ear-shoulder-hip) for robust slouch detection.
+  - Facial Expressions: Analyzes mouth corners, eye openness, and brow positions to detect Smiling, Frowning, Surprised, Angry, and Tired.
+  - Real-Time Feedback: Displays status on video feed, beeps for bad posture (limited to every 5 seconds), and logs data to CSV every 10 seconds.
+  - Calibration: User presses 'c' to set baseline posture.
+- Implementation: Synchronous detection using MediaPipe Tasks API for real-time performance. Models downloaded from Google Storage.
+
+3. Challenges and Reflection
+Initially, I attempted simple Y-coordinate differences for posture detection, but this failed in dynamic environments (e.g., head tilting). I switched to Euclidean distance formulas (d = √((x2-x1)² + (y2-y1)²)) and angle calculations for better robustness against movement and lighting changes.
+
+A major challenge was the MediaPipe API deprecation. The original code used mp.solutions.pose, but the current version requires the Tasks API with separate model files. This involved updating imports, using synchronous detection, and handling callbacks differently. I resolved this by migrating to vision.PoseLandmarker and vision.FaceLandmarker.
+
+I chose Pose Estimation over simple face detection because it provides full-body context, making it more accurate for posture in varying poses and lighting. Face detection alone would miss slouching without body landmarks.
+
+4. Results and Evaluation
+- Functionality: The tool successfully detects posture deviations and facial expressions in real-time, with calibration and logging working as expected.
+- Performance: Runs at ~30 FPS on a standard webcam, with minimal lag. Audio alerts and logging are non-intrusive.
+- Accuracy: Posture detection triggers reliably for slouches; expressions are basic but effective (e.g., smiling when mouth corners rise).
+- User Experience: Simple controls ('c' to calibrate, 'q' to quit), clear on-screen feedback, and data export for analysis.
+- Screenshots: Included in assets/ folder, showing the app with landmarks and status text.
+
+5. Future Improvements
+- Add multi-person support for group monitoring.
+- Integrate machine learning for finer expression detection (e.g., using blendshapes).
+- Support for depth cameras for 3D posture analysis.
+- Web/mobile deployment using MediaPipe.js or Flutter.
+
+6. Conclusion
+This project demonstrates the power of computer vision for health and productivity tools. By leveraging MediaPipe, I created a functional, real-time system that evolves from basic detection to advanced features. The reflection highlights the importance of adapting to API changes and iterative improvement in AI development.
+
+Date: March 28, 2026
+Author: [Your Name]
